@@ -7,7 +7,7 @@ const streamBuffers = require('stream-buffers');
 const router = Router();
 
 router.post("/invoice", (req, res) => {
-    const data = req.body;
+    const dataB = req.body;
     
     const writableStreamBuffer = new streamBuffers.WritableStreamBuffer({
         initialSize: (100 * 1024),   // start at 100 kilobytes.
@@ -15,31 +15,31 @@ router.post("/invoice", (req, res) => {
     });
 
     buildPDF(
-        data,
+        dataB,
         (data) => {
             writableStreamBuffer.write(data);
         },
         () => {
             writableStreamBuffer.end();
-            sendEmailWithPDF(writableStreamBuffer.getContents(), res);
+            sendEmailWithPDF(writableStreamBuffer.getContents(), dataB.email, res);
         }
     );
 });
 
-function sendEmailWithPDF(pdfBuffer, res) {
+function sendEmailWithPDF(pdfBuffer, email, res) {
     let transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
-            user: process.env.EMAIL_USER,
-            pass: process.env.EMAIL_PASS
+           user: 'servibook0@gmail.com',
+            pass: 'szny gcdc dvwa kbdm'
         }
     });
 
     let mailOptions = {
-        from: process.env.EMAIL_USER,
-        to: 'arattuwu@gmail.com',
-        subject: 'Invoice',
-        text: 'Please find attached the invoice.',
+        from: 'servibook0@gmail.com',
+        to: email,
+        subject: 'Thanks for the loan',
+        text: 'Please open attached the invoice.',
         attachments: [
             {
                 filename: 'invoice.pdf',
