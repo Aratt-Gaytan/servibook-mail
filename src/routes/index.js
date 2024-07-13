@@ -53,7 +53,7 @@ function sendEmailWithPDF(pdfBuffer, email, res) {
         if (error) {
             return res.status(500).send(error.toString());
         }
-        res.send('Invoice sent successfully');
+        res.send(`Invoice sent successfully ${info.response}`);
     });
 }
 
